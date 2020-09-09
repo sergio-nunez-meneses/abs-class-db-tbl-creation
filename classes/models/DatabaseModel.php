@@ -4,7 +4,6 @@ require('tools/sql.php');
 abstract class DatabaseModel
 {
 
-  private $db = 'tabsclss';
   private $pdo;
   private $error;
 
@@ -50,15 +49,15 @@ abstract class DatabaseModel
 
     if (empty($this->pdo) === FALSE)
     {
-      $this->pdo->exec("CREATE DATABASE IF NOT EXISTS $this->db");
-      $result = $this->pdo->exec("use $this->db");
+      $this->pdo->exec('CREATE DATABASE IF NOT EXISTS' . DB_NAME);
+      $result = $this->pdo->exec('use' . DB_NAME);
 
       echo '
       <div class="alert alert-success alert-dismissible fade show">
         <button type="button" class="close" data-dismiss="alert">
           <span>&times;</span>
         </button>
-        <p class="text-center">Database: <em>' . $this->db . '</em> created!</p>
+        <p class="text-center">Database: <em>' . DB_NAME . '</em> created!</p>
       </div>
       '; // just for debugging
       return TRUE;
@@ -98,14 +97,14 @@ abstract class DatabaseModel
   {
     if ($this->connexion() === TRUE)
     {
-      $this->pdo->exec("DROP DATABASE IF EXISTS $this->db");
+      $this->pdo->exec('DROP DATABASE IF EXISTS' . DB_NAME);
 
       echo '
       <div class="alert alert-danger alert-dismissible fade show">
         <button type="button" class="close" data-dismiss="alert">
           <span>&times;</span>
         </button>
-        <p class="text-center">Database: <em>' . $this->db . '</em> deleted.</p>
+        <p class="text-center">Database: <em>' . DB_NAME . '</em> deleted.</p>
       </div>
       '; // just for debugging
       return TRUE;
