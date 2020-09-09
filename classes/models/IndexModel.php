@@ -2,6 +2,7 @@
 
 class IndexModel extends DatabaseModel
 {
+
   public function __construct()
   {
     $this->table = 'tabsclss_table';
@@ -22,5 +23,10 @@ class IndexModel extends DatabaseModel
   {
     $result = $this->run_query("SELECT * FROM $this->table")->fetchAll();
     return $result;
+  }
+
+  public function delete_all()
+  {
+    $this->drop_database();
   }
 }

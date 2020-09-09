@@ -3,27 +3,37 @@
 class IndexController
 {
 
+  protected static $created_table;
+
   public static function get_view()
   {
-    $table = new IndexModel();
-
-    if (($_SERVER['REQUEST_METHOD'] == 'POST') && (isset($_POST['insert-data']) === TRUE))
+    if ($_SERVER['REQUEST_METHOD'] == 'POST')
     {
-      $array = explode('.', $_POST['input-data']);
-      foreach ($array as $values)
+      if (isset($_POST['create-database']) === TRUE)
       {
-        $table->add_data($array[rand(0, (count($array) - 1))]);
+        self::$created_table = new IndexModel();
+        IndexView::data_view();
+      }
+      elseif (isset($_POST['insert-data']) === TRUE)
+      {
+        self::$created_table = new IndexModel();
+        $array = explode('.', $_POST['input-data']);
+        for ($i = 0; $i < count($array); $i++)
+        {
+          self::$created_table->add_data($array[rand(0, (count($array) - 1))]);
+        }
+        $data = self::$created_table->get_data();
+        IndexView::data_view($data);
+      }
+      elseif (isset($_POST['drop-database']) === TRUE)
+      {
+        (new IndexModel())->delete_all();
+        IndexView::init_view();
       }
     }
-
-    if (empty($array) === FALSE)
+    else
     {
-      $table->add_data($array[rand(0, (count($array) - 1))]);
-      $data = (new IndexModel())->get_data();
-      IndexView::display($data);
-    }
-    else {
-      IndexView::display();
+      IndexView::init_view();
     }
   }
 }
